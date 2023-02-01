@@ -18,6 +18,6 @@ jobs:
           destination-github-username: 'todd-miller'
           destination-repository-name: 'code-courier-landing'
           user-email: todd.miller@landiindustries.com
-          target-branch: main
+          target-branch: foo 
           source-directory: .
           commit-message: 'woot woot! commit from beyond the repo!'
