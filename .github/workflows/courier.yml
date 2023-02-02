@@ -35,6 +35,24 @@ jobs:
           patch="${{steps.version.outputs.patch}}"
           echo "VERSION=$major.$minor.$patch" >> $GITHUB_ENV
 
+
+      - name: Create Local Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: |
+            Changes in this Release:
+              - First Change
+              - Second Change
+
+          draft: true
+          prerelease: false
+
+
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with: 
