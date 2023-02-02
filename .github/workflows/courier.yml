@@ -17,6 +17,6 @@ jobs:
 
       - uses: repo-sync/pull-request@v2 
         with:
-          token: ${{ secrets.ACCESS_TOKEN}}
+          github_token: ${{ secrets.ACCESS_TOKEN}}
           destination_branch: "main"
 
