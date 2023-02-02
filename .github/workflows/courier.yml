@@ -1,30 +1,65 @@
 name: Courier
 
-on: 
-  pull_request:
-    types:
-      - closed
-
-permissions:
-  contents: write
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest    
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN}}
-          
-      - uses: peter-evans/create-pull-request@v4
+          persist-credentials: false
+          fetch-depth: 0
+         
+      - name: Version Codebase
+        id: version
+        uses: paulhatch/semantic-version@v5.0.2
         with:
-          token: ${{ secrets.GITHUB_TOKEN}}
-          title: First Remote PR
+          tag_prefix: 'v'
 
-      - name: Check outputs
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+      - name: Push to Remote
+        uses: ad-m/github-push-action@master
+        with: 
+          force: true
+          branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          repository: 'todd-miller/code-courier-landing'
+
+      - name: Open PR 
+        uses: repo-sync/pull-request@v2 
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          source_branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
+          destination_branch: "main"
+          destination_repository: "todd-miller/code-courier-landing"
+          pr_title: "Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}"
+          pr_body: |
+            :crown: *An automated PR*
+            
+            # Things Accomplished:
+            Automated PR Creation in Public Remote Repository
+            
+            v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
+            
+            # Next Things to Test
+            - are Major Versions tracked without dropped a Tagged Version?
+            - how best should this Occur?
+            - I think I need to tag releases so i can increment accordingly
+            - not sure if I'm stuck? 
+
+          pr_label: 'release'
+          
+     
+      - name: output-url
+        run: echo ${{steps.open-pr.outputs.pr_url}}
+      - name: output-number
+        run: echo ${{steps.open-pr.outputs.pr_number}}
+      - name: output-created
+        run: echo ${{steps.open-pr.outputs.pr_created}}
+      - name: output-has-changed-files 
+        run: echo ${{steps.open-pr.outputs.has_changed_files}}
