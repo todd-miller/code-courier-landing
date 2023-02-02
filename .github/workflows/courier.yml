@@ -52,7 +52,10 @@ jobs:
             Automated PR Creation in Public Remote Repository
             
             v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
-
+            
+            # Next Things to Test
+            - are Major Versions tracked without dropped a Tagged Version?
+            - how best should this Occur?
 
           pr_label: 'release'
           
