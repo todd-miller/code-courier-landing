@@ -13,23 +13,38 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
          
+      # - name: Push to Remote
+      #   run: |
+      #     git config --global user.name "todd-miller"
+      #     git config --global user.email "todd.miller@landiindustries.com"
+      #     git remote add customer "https://${{ secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git"
+      #     git remote -v
+      #     git status -sb
+      #     git show-ref
+      #     git push customer HEAD
+
       - name: Push to Remote
-        run: |
-          git config --global user.name "todd-miller"
-          git config --global user.email "todd.miller@landiindustries.com"
-          git remote add todd "https://${{ secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git"
-          git remote -v
-          git status -sb
-          git show-ref
-          git push todd HEAD
+        uses: ad-m/github-push-action@master
+        with: 
+          force: true
+          branch: ${{ github.ref }}
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          repository: 'todd-miller/code-courier-landing'
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
+          pr_title: "Pulling ${{github.ref }} into main"
+          pr_body: |
+            :crown: *An automated PR*
+            
+            # Things Accomplished:
+            Automated PR Creation in Public Remote Repository
+          pr_label: 'release'
+          
      
       - name: output-url
         run: echo ${{steps.open-pr.outputs.pr_url}}
