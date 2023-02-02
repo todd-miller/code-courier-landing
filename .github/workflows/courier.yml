@@ -42,6 +42,7 @@ jobs:
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
+          source_branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
           pr_title: "Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}"
@@ -52,7 +53,11 @@ jobs:
             Automated PR Creation in Public Remote Repository
             
             v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
-
+            
+            # Next Things to Test
+            - are Major Versions tracked without dropped a Tagged Version?
+            - how best should this Occur?
+            - I think I need to tag releases so i can increment accordingly
 
           pr_label: 'release'
           
