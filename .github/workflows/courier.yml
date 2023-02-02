@@ -57,6 +57,7 @@ jobs:
             # Next Things to Test
             - are Major Versions tracked without dropped a Tagged Version?
             - how best should this Occur?
+            - I think I need to tag releases so i can increment accordingly
 
           pr_label: 'release'
           
