@@ -7,6 +7,7 @@ on:
 
 env:
   DESTINATION_REPO: 'todd-miller/code-courier-landing'
+  DESTINATION_BRANCH: 'main'
 
 
 jobs:
@@ -47,8 +48,8 @@ jobs:
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           source_branch: Release-${{ steps.semver.outputs.version}}
-          destination_branch: "main"
-          destination_repository: ${} 
+          destination_branch: ${{ env. DESTINATION_BRANCH }} 
+          destination_repository: ${{ env.DESTINATION_REPO }} 
           pr_title: "Release-${{ steps.semver.outputs.version}}"
           pr_body: |
             :crown: *An automated PR*
