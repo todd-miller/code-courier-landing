@@ -1,6 +1,14 @@
 name: Courier
 
-on: push
+on:
+  push:
+    branches:
+      - main
+
+env:
+  DESTINATION_REPO: 'todd-miller/code-courier-landing'
+  DESTINATION_BRANCH: 'main'
+
 
 jobs:
   build:
@@ -13,51 +21,64 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
          
-      # - name: Push to Remote
-      #   run: |
-      #     git config --global user.name "todd-miller"
-      #     git config --global user.email "todd.miller@landiindustries.com"
-      #     git remote add customer "https://${{ secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git"
-      #     git remote -v
-      #     git status -sb
-      #     git show-ref
-      #     git push customer HEAD
-      #
-
       - name: Version Codebase
         id: version
         uses: paulhatch/semantic-version@v5.0.2
         with:
           tag_prefix: 'v'
 
+      - name: Version Name
+        id: semver
+        run: |
+          major="${{steps.version.outputs.major}}"
+          minor="${{steps.version.outputs.minor}}"
+          patch="${{steps.version.outputs.patch}}"
+          echo "VERSION=$major.$minor.$patch" >> $GITHUB_ENV
+
+
+      - name: Create Local Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: |
+            Changes in this Release:
+              - No Change, just making sure PATCH version works as expected 
+
+          draft: true
+          prerelease: false
+
+
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with: 
           force: true
-          branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
+          branch: Release-${{ env.VERSION }}
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          repository: 'todd-miller/code-courier-landing'
+          repository: ${{ env.DESTINATION_REPO }} 
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
-          destination_branch: "main"
-          destination_repository: "todd-miller/code-courier-landing"
-          pr_title: "Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}"
+          source_branch: Release-${{ env.VERSION }}
+          destination_branch: ${{ env. DESTINATION_BRANCH }} 
+          destination_repository: ${{ env.DESTINATION_REPO }} 
+          pr_title: "Release-${{ env.VERSION }}"
           pr_body: |
             :crown: *An automated PR*
             
             # Things Accomplished:
             Automated PR Creation in Public Remote Repository
-            
-            v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
+           
+            v${{ env.VERSION }}
             
             # Next Things to Test
-            - are Major Versions tracked without dropped a Tagged Version?
-            - how best should this Occur?
-            - I think I need to tag releases so i can increment accordingly
+            - must publish a new tag with the semver so the following
+              publish with do it correctly!
 
           pr_label: 'release'
           
