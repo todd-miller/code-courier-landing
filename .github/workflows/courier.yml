@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.ACCESS_TOKEN}}
+          token: ${{ secrets.GITHUB_TOKEN}}
           repository: todd-miller/code-courier-landing
 
       - uses: repo-sync/pull-request@v2 
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN}}
+          github_token: ${{ secrets.GITHUB_TOKEN}}
           destination_branch: "main"
 
