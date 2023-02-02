@@ -19,7 +19,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN}}
           branch-suffix: timestamp
           branch: RGNTS-3
-          base: main
           title: First Remote PR
 
       - name: Check outputs
