@@ -9,9 +9,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          persist-credentials: false
-          fetch-depth: 0
          
       - name: Push to Remote
         run: |
@@ -21,13 +18,13 @@ jobs:
           git remote -v
           git status -sb
           git show-ref
-          git pull todd main --allow-unrelated-histories
-        
+          git push --set-upstream todd ${GITHUB_REF##*/} 
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
+
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
      
