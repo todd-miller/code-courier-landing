@@ -31,14 +31,13 @@ jobs:
         id: semver
         run: |
           output="$(${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}})"
-          # end of optional handling for multi line json
-          echo "::set-output name=name::$output"
+          echo "::set-output name=version::$output"
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with: 
           force: true
-          branch: Release-${{ steps.semver.outputs.name}}
+          branch: Release-${{ steps.semver.outputs.version}}
           github_token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.DESTINATION_REPO }} 
 
@@ -46,10 +45,10 @@ jobs:
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: Release-${{ steps.semver.outputs.name}}
+          source_branch: Release-${{ steps.semver.outputs.version}}
           destination_branch: ${{ env.DESTINATION_BRANCH }} 
           destination_repository: ${{ env.DESTINATION_REPO }} 
-          pr_title: "Release-${{ steps.version.outputs.major }}"
+          pr_title: "Release-${{ steps.semver.outputs.version}}"
           pr_body: |
             :crown: *An automated PR*
             
