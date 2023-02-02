@@ -12,20 +12,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-          
-      - name: Push Commit
-        run: git push https://${{ secrets.ACCESS_TOKEN }}@github.com/todd-miller/code-courier-landing.git
-
+         
       - name: Push to Remote
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
-          repository: todd-miller/code-courier-landing
+        run: |
+          git remote rm origin
+          git remote add origin https://${{github.actor}}:${{secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git
+          git remote -v
+          git show-ref
+          git push --set-upstream origin TEMP_BRANCH
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
+
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
      
@@ -35,5 +35,5 @@ jobs:
         run: echo ${{steps.open-pr.outputs.pr_number}}
       - name: output-created
         run: echo ${{steps.open-pr.outputs.pr_created}}
-      - name: output-has-changed-files
+      - name: output-has-changed-files 
         run: echo ${{steps.open-pr.outputs.has_changed_files}}
