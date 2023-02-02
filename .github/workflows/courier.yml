@@ -19,7 +19,7 @@ jobs:
           git remote add origin https://${{github.actor}}:${{secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git
           git remote -v
           git show-ref
-          git push --set-upstream origin TEMP_BRANCH
+          git push --set-upstream origin 
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
