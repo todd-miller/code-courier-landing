@@ -44,7 +44,7 @@ jobs:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
-          pr_title: "Pulling ${{github.ref }} into main"
+          pr_title: "Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}"
           pr_body: |
             :crown: *An automated PR*
             
