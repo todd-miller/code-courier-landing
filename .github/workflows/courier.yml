@@ -33,13 +33,13 @@ jobs:
           major="${{steps.version.outputs.major}}"
           minor="${{steps.version.outputs.minor}}"
           patch="${{steps.version.outputs.patch}}"
-          echo "version=$major.$minor.$patch" >> $GITHUB_OUTPUT
+          echo "VERSION=$major.$minor.$patch" >> $GITHUB_ENV
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with: 
           force: true
-          branch: Release-${{ steps.semver.outputs.version}}
+          branch: Release-${{ env.VERSION }}
           github_token: ${{ secrets.ACCESS_TOKEN }}
           repository: ${{ env.DESTINATION_REPO }} 
 
@@ -47,23 +47,21 @@ jobs:
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          source_branch: Release-${{ steps.semver.outputs.version}}
+          source_branch: Release-${{ env.VERSION }}
           destination_branch: ${{ env. DESTINATION_BRANCH }} 
           destination_repository: ${{ env.DESTINATION_REPO }} 
-          pr_title: "Release-${{ steps.semver.outputs.version}}"
+          pr_title: "Release-${{ env.VERSION }}"
           pr_body: |
             :crown: *An automated PR*
             
             # Things Accomplished:
             Automated PR Creation in Public Remote Repository
-            
-            v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
+           
+            v${{ env.VERSION }}
             
             # Next Things to Test
-            - are Major Versions tracked without dropped a Tagged Version?
-            - how best should this Occur?
-            - I think I need to tag releases so i can increment accordingly
-            - not sure if I'm stuck? 
+            - must publish a new tag with the semver so the following
+              publish with do it correctly!
 
           pr_label: 'release'
           
