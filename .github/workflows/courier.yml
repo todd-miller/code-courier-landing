@@ -22,12 +22,19 @@ jobs:
       #     git status -sb
       #     git show-ref
       #     git push customer HEAD
+      #
+
+      - name: Version Codebase
+        id: version
+        uses: paulhatch/semantic-version@v5.0.2
+        with:
+          tag_prefix: 'v'
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with: 
           force: true
-          branch: ${{ github.ref }}
+          branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
           github_token: ${{ secrets.ACCESS_TOKEN }}
           repository: 'todd-miller/code-courier-landing'
 
