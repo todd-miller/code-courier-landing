@@ -46,8 +46,7 @@ jobs:
           release_name: Release v${{ env.VERSION }}
           body: |
             Changes in this Release:
-              - First Change
-              - Second Change
+              - No Change, just making sure PATCH version works as expected 
 
           draft: true
           prerelease: false
