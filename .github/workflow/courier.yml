@@ -1,0 +1,23 @@
+name: Courier
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+
+    steps:
+      - uses: actions/checkout@v3
+          
+      - name: Push To Client Repo
+        uses: cpina/github-action-push-to-another-repository@main
+        env: 
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }} 
+        with:
+          destination-github-username: 'todd-miller'
+          destination-github-repository-name: 'code-courier-landing'
+          user-email: todd.miller@landiindustries.com
+          target-branch: main
