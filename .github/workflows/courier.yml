@@ -15,4 +15,8 @@ jobs:
       - uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
+          commit-message: 'remote PR trigger!'
+          committer: 'todd-miller <todd.miller@landiindustries.com>'
+          branch: RGNTS-3_create_initial_action
           base: main
+          title: First Remote PR
