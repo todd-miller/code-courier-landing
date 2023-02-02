@@ -33,7 +33,7 @@ jobs:
           major="${{steps.version.outputs.major}}"
           minor="${{steps.version.outputs.minor}}"
           patch="${{steps.version.outputs.patch}}"
-          echo "version=$major.$minor.$patch" >> GITHUB_OUTPUT
+          echo "version=${major}.${minor}.${patch}" >> GITHUB_OUTPUT
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
