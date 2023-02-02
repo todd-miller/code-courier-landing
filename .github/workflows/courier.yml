@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+          
+      - name: Push Commit
+        run: git push https://${{ secrets.ACCESS_TOKEN }}@github.com/todd-miller/code-courier-landing.git
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
