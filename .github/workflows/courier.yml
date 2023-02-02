@@ -2,9 +2,6 @@ name: Courier
 
 on: push
 
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest    
@@ -12,11 +9,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
          
       - name: Push to Remote
         run: |
           git remote rm origin
-          git remote add origin https://${{github.actor}}:${{secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git
+          git remote add origin https://todd-miller:${{secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git
           git remote -v
           git show-ref
           git push --set-upstream origin ${GITHUB_REF##*/} 
