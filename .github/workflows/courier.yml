@@ -11,14 +11,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
-          branch: ${{ github.ref }}
-          repository: "todd-miller/code-courier-landing"
+          repository: todd-miller/code-courier-landing
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
