@@ -10,15 +10,24 @@ jobs:
     runs-on: ubuntu-latest    
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          repository: "todd-miller/code-courier-landing" 
 
-      - uses: repo-sync/pull-request@v2 
+      - name: Push to Remote
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: ${{ github.ref }}
+          repository: "todd-miller/code-courier-landing"
+
+      - name: Open PR 
+        uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           destination_branch: "main"
+          destination_repository: "todd-miller/code-courier-landing"
      
       - name: output-url
         run: echo ${{steps.open-pr.outputs.pr_url}}
