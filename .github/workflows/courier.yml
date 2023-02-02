@@ -14,17 +14,9 @@ jobs:
         with:
           token: ${{ secrets.ACCESS_TOKEN}}
           repository: todd-miller/code-courier-landing
-          
-      - uses: peter-evans/create-pull-request@v4
+
+      - uses: repo-sync/pull-request@v2 
         with:
           token: ${{ secrets.ACCESS_TOKEN}}
-          branch-suffix: timestamp
-          branch: RGNTS-3
-          base: main
-          title: First Remote PR
+          destination_branch: "main"
 
-      - name: Check outputs
-        if: ${{ steps.cpr.outputs.pull-request-number }}
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
