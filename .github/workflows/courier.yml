@@ -2,6 +2,9 @@ name: Courier
 
 on: push
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest    
@@ -14,7 +17,6 @@ jobs:
       - uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          committer: 'todd-miller <todd.miller@landiindustries.com>'
           branch-suffix: timestamp
           branch: RGNTS-3
           base: main
