@@ -1,0 +1,22 @@
+{
+  "name": "code-courier",
+  "version": "1.0.0",
+  "description": "Transfers code between repositories while accounting for important meta-data",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/li-argonauts/code-courier.git"
+  },
+  "author": "Landi Industries",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/li-argonauts/code-courier/issues"
+  },
+  "homepage": "https://github.com/li-argonauts/code-courier#readme",
+  "devDependencies": {
+    "jest": "^29.4.1"
+  }
+}
