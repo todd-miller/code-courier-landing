@@ -1,26 +1,26 @@
 name: Courier
 
-on: 
-  pull_request:
-    types:
-      - closed
+on: push
 
 permissions:
   contents: write
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest    
 
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN}}
+          token: ${{ secrets.ACCESS_TOKEN}}
+          repository: todd-miller/code-courier-landing
           
       - uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN}}
+          token: ${{ secrets.ACCESS_TOKEN}}
+          branch-suffix: timestamp
+          branch: RGNTS-3
+          base: main
           title: First Remote PR
 
       - name: Check outputs
