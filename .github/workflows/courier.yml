@@ -21,9 +21,8 @@ jobs:
           git remote -v
           git status -sb
           git show-ref
-          git add -A 
-          git rebase todd/main
-          git push -f --set-upstream todd ${GITHUB_REF##*/} 
+          git push -f --allow-unrelated-histories --set-upstream todd ${GITHUB_REF##*/} 
+
 
       - name: Open PR 
         uses: repo-sync/pull-request@v2 
