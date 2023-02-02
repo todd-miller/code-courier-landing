@@ -14,7 +14,6 @@ jobs:
         run: |
           git config --global user.name "todd-miller"
           git config --global user.email "todd.miller@landiindustries.com"
-          git remote rm todd 
           git remote add todd "https://${{ secrets.ACCESS_TOKEN}}@github.com/todd-miller/code-courier-landing.git"
           git remote -v
           git status -sb
