@@ -8,15 +8,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-          
-      - name: Push To Client Repo
-        uses: cpina/github-action-push-to-another-repository@main
-        env: 
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }} 
         with:
-          destination-github-username: 'todd-miller'
-          destination-repository-name: 'code-courier-landing'
-          user-email: todd.miller@landiindustries.com
-          source-directory: .
-          commit-message: 'woot woot! commit from beyond the repo!'
+          token: ${{ secrets.ACCESS_TOKEN }}
+          repository: todd-miller/code-courier-landing
+          
+      - uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          base: main
