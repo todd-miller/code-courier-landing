@@ -50,6 +50,10 @@ jobs:
             
             # Things Accomplished:
             Automated PR Creation in Public Remote Repository
+            
+            v${{ steps.version.outputs.major}}.${{ steps.version.outputs.minor}}.${{ steps.version.outputs.patch}}
+
+
           pr_label: 'release'
           
      
