@@ -15,8 +15,14 @@ jobs:
       - uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          commit-message: 'remote PR trigger!'
           committer: 'todd-miller <todd.miller@landiindustries.com>'
-          branch: RGNTS-3_create_initial_action
+          branch-suffix: timestamp
+          branch: RGNTS-3
           base: main
           title: First Remote PR
+
+      - name: Check outputs
+        if: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
