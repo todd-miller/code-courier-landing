@@ -42,6 +42,7 @@ jobs:
         uses: repo-sync/pull-request@v2 
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
+          source_branch: Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}
           destination_branch: "main"
           destination_repository: "todd-miller/code-courier-landing"
           pr_title: "Release-${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}}"
