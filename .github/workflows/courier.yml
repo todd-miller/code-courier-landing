@@ -7,7 +7,6 @@ on:
 
 env:
   DESTINATION_REPO: 'todd-miller/code-courier-landing'
-  DESTINATION_BRANCH: 'main'
 
 
 jobs:
@@ -27,11 +26,13 @@ jobs:
         with:
           tag_prefix: 'v'
 
-      - name: Capture Version Name
+      - name: Version Name
         id: semver
         run: |
-          output="$(${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}.${{steps.version.outputs.patch}})"
-          echo "::set-output name=version::$output"
+          major="${{steps.version.outputs.major}}"
+          minor="${{steps.version.outputs.minor}}"
+          patch="${{steps.version.outputs.patch}}"
+          echo "version=$major.$minor.$patch" >> GITHUB_OUTPUT
 
       - name: Push to Remote
         uses: ad-m/github-push-action@master
@@ -46,8 +47,8 @@ jobs:
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           source_branch: Release-${{ steps.semver.outputs.version}}
-          destination_branch: ${{ env.DESTINATION_BRANCH }} 
-          destination_repository: ${{ env.DESTINATION_REPO }} 
+          destination_branch: "main"
+          destination_repository: ${} 
           pr_title: "Release-${{ steps.semver.outputs.version}}"
           pr_body: |
             :crown: *An automated PR*
